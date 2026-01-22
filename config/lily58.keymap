@@ -1,4 +1,6 @@
-/* ZMK Scylla Ultimate V9.4 - Syntax & Node Name Fix */
+/*
+ * ZMK Scylla Ultimate V10 - Geometry Fix (Lily58 Matrix on Scylla Body)
+ */
 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
@@ -184,12 +186,18 @@
 
         default_layer {
             bindings = <
+/* ------------------------------------------------------------------------------------------------------------
+ * |  REN  |  UNDO |  REDO |  OPT  |  COPY |  PASTE |                   | SEARCH| USAGE | FILES |  FIX  |  FMT  |  SHOT |
+ * |  BT0  |   Q   |   W   |   F   |   P   |   B    |                   |   J   |   L   |   U   |   Y   |   ;   |  BT3  |
+ * |  BT1  |   A   |   R   |   S   |   T   |   G    |                   |   M   |   N   |   E   |   I   |   O   |  VOL+ |
+ * |  BT2  |   Z   |   X   |   C   |   D   |   V    |  ESC  |  |  DEL   |   K   |   H   |   ,   |   .   |   /   |  VOL- |
+ * |  MIR  |  NAV  |  TAB  |  SPACE |  | BSPC |  RET  |  BSPC |  RET  |
+ */
 &m_ren        &m_undo      &m_redo      &m_opt       &m_copy      &m_pst            &m_search    &m_usage     &m_f_all     &m_fix       &m_fmt       &m_shot
 &bt BT_SEL 0  &kp Q        &kp W        &kp F        &kp P        &kp B             &kp J        &kp L        &kp U        &kp Y        &kp SEMI     &bt BT_SEL 3
 &bt BT_SEL 1  &hm LCTRL A  &hm LALT R   &hm LGUI S   &hm LSHFT T  &kp G             &kp M        &hm RSHFT N  &hm RGUI E   &hm RALT I   &hm RCTRL O  &kp C_VOL_UP
-&bt BT_SEL 2  &kp Z        &kp X        &kp C        &kp D        &kp V             &kp K        &kp H        &kp COMMA    &kp DOT      &kp FSLH     &kp C_VOL_DN
-                           &kp ESC      &lt SYM TAB  &mt LSHFT SPACE                &kp DEL      &lt NUM BSPC &mt RALT RET
-                                        &tog MIR     &mo NAV                        &mo NAV      &tog MIR
+&bt BT_SEL 2  &kp Z        &kp X        &kp C        &kp D        &kp V   &kp ESC   &kp DEL      &kp K        &kp H        &kp COMMA    &kp DOT      &kp FSLH      &kp C_VOL_DN
+                                        &tog MIR     &mo NAV      &lt SYM TAB &mt LSHFT SPACE    &lt NUM BSPC &mt RALT RET &kp BSPC     &kp RET
             >;
         };
 
@@ -198,9 +206,8 @@
 &kp N1        &kp N2       &kp N3       &kp N4       &kp N5       &kp N6            &kp N7       &kp N8       &kp N9       &kp N0       &kp MINUS    &kp EQUAL
 &none         &kp TAB      &kp Q        &kp W        &kp E        &kp R             &kp T        &kp Y        &kp U        &kp I        &kp O        &none
 &none         &kp LCTRL    &kp A        &kp S        &kp D        &kp F             &kp G        &kp H        &kp J        &kp K        &kp L        &none
-&none         &kp LSHFT    &kp Z        &kp X        &kp C        &kp V             &kp B        &kp N        &kp M        &kp COMMA    &kp DOT      &none
-                           &kp ESC      &kp SPACE    &kp SPACE                      &kp SPACE    &kp RET      &trans
-                                        &trans       &mo GFN                        &trans       &tog GAM
+&none         &kp LSHFT    &kp Z        &kp X        &kp C        &kp V   &kp ESC   &kp SPACE    &kp B        &kp N        &kp M        &kp COMMA    &kp DOT       &none
+                                        &trans       &mo GFN      &kp SPACE &kp SPACE            &kp SPACE    &kp RET      &trans       &trans
             >;
         };
 
@@ -209,9 +216,8 @@
 &trans    &trans       &trans       &trans       &trans       &trans            &trans       &trans       &trans       &trans       &trans       &trans
 &trans    &kp SEMI     &kp Y        &kp U        &kp L        &kp J             &kp B        &kp P        &kp F        &kp W        &kp Q        &trans
 &trans    &hm RCTRL O  &hm RALT I   &hm RGUI E   &hm RSHFT N  &kp M             &kp G        &hm LSHFT T  &hm LGUI S   &hm LALT R   &hm LCTRL A  &trans
-&trans    &kp FSLH     &kp DOT      &kp COMMA    &kp H        &kp K             &kp V        &kp D        &kp C        &kp X        &kp Z        &trans
-                       &trans       &trans       &kp RET                        &mt RSHFT SPACE &kp BSPC  &trans
-                                    &trans       &trans                         &trans       &trans
+&trans    &kp FSLH     &kp DOT      &kp COMMA    &kp H        &kp K   &trans    &trans       &kp V        &kp D        &kp C        &kp X        &kp Z         &trans
+                                    &trans       &trans       &kp RET   &mt RSHFT SPACE      &kp BSPC     &trans       &trans       &trans
             >;
         };
 
@@ -220,9 +226,8 @@
 &trans        &trans       &trans       &trans       &trans       &trans            &trans       &trans       &trans       &trans       &trans       &trans
 &none         &kp GRAVE    &kp LBKT     &kp LBRC     &kp RBRC     &kp RBKT          &kp STAR     &kp N7       &kp N8       &kp N9       &kp PLUS     &none
 &none         &kp APOS     &kp TILDE    &kp CARET    &kp DQT      &kp AMPS          &kp FSLH     &kp N4       &kp N5       &kp N6       &kp MINUS    &none
-&none         &none        &kp MINUS    &kp UNDER    &none        &none             &kp N0       &kp N1       &kp N2       &kp N3       &kp EQUAL    &none
-                           &trans       &trans       &trans                         &trans       &trans       &trans
-                                        &trans       &trans                         &trans       &trans
+&none         &none        &kp MINUS    &kp UNDER    &none        &none   &trans    &trans       &kp N0       &kp N1       &kp N2       &kp N3       &kp EQUAL     &none
+                                        &trans       &trans       &trans    &trans               &trans       &trans       &trans       &trans
             >;
         };
 
@@ -231,9 +236,8 @@
 &trans        &trans       &trans       &trans       &trans       &trans            &trans       &trans       &trans       &trans       &trans       &trans
 &none         &k_log       &k_tpl       &k_arr       &k_elv       &kp PRCNT         &kp AMPS     &kp LT       &kp GT       &kp DQT      &kp APOS     &none
 &none         &kp EXCL     &kp AT       &kp HASH     &kp DLLR     &kp GRAVE         &kp COLON    &kp LPAR     &kp RPAR     &kp LBRC     &kp RBRC     &none
-&none         &kp LC(Z)    &kp LC(X)    &kp LC(C)    &kp LC(V)    &kp PIPE          &kp EXCL     &kp LBKT     &kp RBKT     &kp EQUAL    &kp QMARK    &none
-                           &trans       &trans       &trans                         &trans       &trans       &trans
-                                        &trans       &trans                         &trans       &trans
+&none         &kp LC(Z)    &kp LC(X)    &kp LC(C)    &kp LC(V)    &kp PIPE  &trans  &trans       &kp EXCL     &kp LBKT     &kp RBKT     &kp EQUAL    &kp QMARK     &none
+                                        &trans       &trans       &trans    &trans               &trans       &trans       &trans       &trans
             >;
         };
 
@@ -242,9 +246,8 @@
 &trans        &trans       &trans       &trans       &trans       &trans            &trans       &trans       &trans       &trans       &trans       &trans
 &trans        &kp F12      &kp F7       &kp F8       &kp F9       &trans            &trans       &kp PG_UP    &kp UP       &kp PG_DN    &trans       &trans
 &trans        &kp F11      &kp F4       &kp F5       &kp F6       &trans            &trans       &kp LEFT     &kp DOWN     &kp RIGHT    &kp INS      &trans
-&trans        &kp F10      &kp F1       &kp F2       &kp F3       &trans            &trans       &kp HOME     &kp END      &kp DEL      &trans       &trans
-                           &trans       &trans       &trans                         &trans       &trans       &trans
-                                        &trans       &trans                         &trans       &trans
+&trans        &kp F10      &kp F1       &kp F2       &kp F3       &trans  &trans    &trans       &kp HOME     &kp END      &kp DEL      &trans       &trans
+                                        &trans       &trans       &trans    &trans               &trans       &trans       &trans       &trans
             >;
         };
 
@@ -253,9 +256,8 @@
 &kp F1        &kp F2       &kp F3       &kp F4       &kp F5       &kp F6            &kp F7       &kp F8       &kp F9       &kp F10      &kp F11      &kp F12
 &trans        &trans       &trans       &trans       &trans       &trans            &trans       &trans       &trans       &trans       &trans       &trans
 &trans        &trans       &trans       &trans       &trans       &trans            &trans       &trans       &trans       &trans       &trans       &trans
-&trans        &trans       &trans       &trans       &trans       &trans            &trans       &trans       &trans       &trans       &trans       &trans
-                           &trans       &trans       &trans                         &trans       &trans       &trans
-                                        &trans       &trans                         &trans       &trans
+&trans        &trans       &trans       &trans       &trans       &trans  &trans    &trans       &trans       &trans       &trans       &trans       &trans        &trans
+                                        &trans       &trans       &trans    &trans               &trans       &trans       &trans       &trans
             >;
         };
     };
