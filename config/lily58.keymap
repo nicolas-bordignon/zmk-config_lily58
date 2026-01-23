@@ -1,11 +1,8 @@
 /*
- * ZMK Scylla Ultimate V15 - Final Layout & Geometry Fix
- * - Matrix: Lily58 mapeada para Scylla
- * - Thumbs: Hold-Preferred (Atalhos instantâneos)
- * - Lado Direito: 
- * Interno (5) = ENTER
- * Centro  (1) = BACKSPACE
- * Externo (2) = DELETE
+ * ZMK Scylla Ultimate V20 - Balanced Thumbs
+ * - Home Row: Tap-Preferred (Segurança máxima para digitação).
+ * - Thumbs: Balanced (O melhor dos dois mundos: permite digitação rápida sem falhar o atalho).
+ * - Geometria: Confirmada e fixa.
  */
 
 #include <behaviors.dtsi>
@@ -20,30 +17,6 @@
 #define SYM 4
 #define NAV 5
 #define GFN 6
-
-/* --- Comportamentos --- */
-
-/* Home Row: Tap Preferred (Seguro para não disparar Shift enquanto digita rápido) */
-&mt {
-    tapping-term-ms = <200>;
-    flavor = "tap-preferred";
-};
-
-/* Layers: Balanced */
-&lt {
-    tapping-term-ms = <200>;
-    flavor = "balanced";
-};
-
-/* Sticky Keys */
-&sk {
-    release-after-ms = <2000>;
-    quick-release;
-};
-
-&sl {
-    release-after-ms = <2000>;
-};
 
 / {
     macros {
@@ -148,7 +121,9 @@
     };
 
     behaviors {
-        /* Home Row Mods - Tap Preferred (Seguro) */
+        /* 1. Home Row Mods: Tap-Preferred
+         * ESSENCIAL: Evita que 'asdf' virem shift/ctrl enquanto digita rápido.
+         */
         hm: homerow-mods {
             compatible = "zmk,behavior-hold-tap";
             label = "HOMEROW_MODS";
@@ -159,26 +134,49 @@
             bindings = <&kp>, <&kp>;
         };
 
-        /* Thumb Modifiers - Hold Preferred (Instantâneo) */
+        /* 2. Thumb Modifiers: Balanced
+         * PONTO DOCE: Permite "rolling" (digitar rápido) sem disparar o modificador,
+         * mas garante o atalho se você segurar a tecla até terminar o comando.
+         */
         tm: thumb-mod {
             compatible = "zmk,behavior-hold-tap";
             label = "THUMB_MOD";
             #binding-cells = <2>;
             tapping-term-ms = <200>;
             quick-tap-ms = <0>;
-            flavor = "hold-preferred";
+            flavor = "balanced";
             bindings = <&kp>, <&kp>;
         };
 
-        /* Thumb Layers - Hold Preferred (Instantâneo) */
+        /* 3. Thumb Layers: Balanced
+         * Mesma lógica para trocar de layer (Num/Sym).
+         */
         tl: thumb-layer {
             compatible = "zmk,behavior-hold-tap";
             label = "THUMB_LAYER";
             #binding-cells = <2>;
             tapping-term-ms = <200>;
             quick-tap-ms = <0>;
-            flavor = "hold-preferred";
+            flavor = "balanced";
             bindings = <&mo>, <&kp>;
+        };
+        
+        /* Sticky Keys & Layers */
+        sk: sticky_key {
+            compatible = "zmk,behavior-sticky-key";
+            label = "STICKY_KEY";
+            #binding-cells = <1>;
+            release-after-ms = <2000>;
+            quick-release;
+            bindings = <&kp>;
+        };
+        
+        sl: sticky_layer {
+            compatible = "zmk,behavior-sticky-key";
+            label = "STICKY_LAYER";
+            #binding-cells = <1>;
+            release-after-ms = <2000>;
+            bindings = <&mo>;
         };
     };
 
@@ -224,7 +222,7 @@
 &bt BT_SEL 0  &kp Q        &kp W        &kp F        &kp P        &kp B             &kp J        &kp L        &kp U        &kp Y        &kp SEMI     &bt BT_SEL 3
 &bt BT_SEL 1  &hm LCTRL A  &hm LALT R   &hm LGUI S   &hm LSHFT T  &kp G             &kp M        &hm RSHFT N  &hm RGUI E   &hm RALT I   &hm RCTRL O  &kp C_VOL_UP
 &bt BT_SEL 2  &kp Z        &kp X        &kp C        &kp D        &kp V   &kp ESC   &tm RALT RET &kp K        &kp H        &kp COMMA    &kp DOT      &kp FSLH      &kp C_VOL_DN
-                                        &tog MIR     &mo NAV      &tl SYM TAB     &tm LSHFT SPACE  &tl NUM BSPC &kp DEL      &mo NAV      &tog MIR
+                                        &tog MIR     &mo NAV      &tl SYM TAB  &tm LSHFT SPACE  &tl NUM BSPC &kp DEL      &mo NAV      &tog GAM
             >;
         };
 
@@ -234,7 +232,7 @@
 &none         &kp TAB      &kp Q        &kp W        &kp E        &kp R             &kp T        &kp Y        &kp U        &kp I        &kp O        &none
 &none         &kp LCTRL    &kp A        &kp S        &kp D        &kp F             &kp G        &kp H        &kp J        &kp K        &kp L        &none
 &none         &kp LSHFT    &kp Z        &kp X        &kp C        &kp V   &kp SPACE &kp RET      &kp B        &kp N        &kp M        &kp COMMA    &kp DOT       &none
-                                        &trans       &mo GFN      &kp ESC   &kp SPACE      &kp SPACE    &kp SPACE    &trans       &tog GAM
+                                        &trans       &mo GFN      &kp ESC   &kp SPACE    &kp SPACE    &kp SPACE    &trans       &tog GAM
             >;
         };
 
