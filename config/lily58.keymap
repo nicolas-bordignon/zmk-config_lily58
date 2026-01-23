@@ -1,8 +1,8 @@
 /*
- * ZMK Scylla Ultimate V20 - Balanced Thumbs
- * - Home Row: Tap-Preferred (Segurança máxima para digitação).
- * - Thumbs: Balanced (O melhor dos dois mundos: permite digitação rápida sem falhar o atalho).
- * - Geometria: Confirmada e fixa.
+ * ZMK Scylla Ultimate V21 - Geometry Restored & Balanced
+ * - Left Thumbs FIXED: ESC (Ext) | TAB (Cen) | SPACE (Int)
+ * - Right Thumbs: ENTER (Int) | BSPC (Cen) | DEL (Ext)
+ * - Behavior: Home Row (Tap-Preferred) | Thumbs (Balanced)
  */
 
 #include <behaviors.dtsi>
@@ -121,9 +121,7 @@
     };
 
     behaviors {
-        /* 1. Home Row Mods: Tap-Preferred
-         * ESSENCIAL: Evita que 'asdf' virem shift/ctrl enquanto digita rápido.
-         */
+        /* Home Row: Tap-Preferred (Segurança para letras) */
         hm: homerow-mods {
             compatible = "zmk,behavior-hold-tap";
             label = "HOMEROW_MODS";
@@ -134,10 +132,7 @@
             bindings = <&kp>, <&kp>;
         };
 
-        /* 2. Thumb Modifiers: Balanced
-         * PONTO DOCE: Permite "rolling" (digitar rápido) sem disparar o modificador,
-         * mas garante o atalho se você segurar a tecla até terminar o comando.
-         */
+        /* Thumbs: Balanced (Fluidez para atalhos e layers) */
         tm: thumb-mod {
             compatible = "zmk,behavior-hold-tap";
             label = "THUMB_MOD";
@@ -148,9 +143,6 @@
             bindings = <&kp>, <&kp>;
         };
 
-        /* 3. Thumb Layers: Balanced
-         * Mesma lógica para trocar de layer (Num/Sym).
-         */
         tl: thumb-layer {
             compatible = "zmk,behavior-hold-tap";
             label = "THUMB_LAYER";
@@ -161,7 +153,6 @@
             bindings = <&mo>, <&kp>;
         };
         
-        /* Sticky Keys & Layers */
         sk: sticky_key {
             compatible = "zmk,behavior-sticky-key";
             label = "STICKY_KEY";
