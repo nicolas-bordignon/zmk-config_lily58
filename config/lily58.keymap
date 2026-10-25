@@ -1,11 +1,11 @@
 /*
- * ZMK Scylla Ultimate V22 - Unified Cognitive Flow & Ergonomics
+ * ZMK Scylla Ultimate V23 - Cognitive Flow, Undead Code Layer & Gaming Precision
  * - Workspaces: 1 (DEV), 2 (LAB), 3 (COM), 4 (GAM)
- * - Navigation: Vim HJKL + Setas alinhadas
- * - Code Layer: Unificação de NUM + SYM (Delimitadores na esquerda, Numpad 3x3 na direita)
- * - Combos PT-BR: C+D = ç | R+S = ~ | S+T = '
+ * - Navigation: Vim HJKL + Setas alinhadas + Print de Área (m_shot) + Swap Master
+ * - Code Layer: Símbolos literais sem Dead Key (RA), ?, !, _ nos indicadores e Numpad 3x3
+ * - Combos PT-BR (exclusivos da DEF com require-prior-idle-ms): C+D = ç/Ç | R+S = ~ | S+T = ´ | X+C = ^
  * - Combos CLI: W+F = & | F+P = |
- * - Camada SYS protegida: Q+A = SYS (Bluetooth & Hardware)
+ * - Gaming Layer: QWERTY alinhado com T/G/B na mão esquerda e LALT no polegar (sem LGUI acidental)
  */
 
 #include <behaviors.dtsi>
@@ -18,40 +18,21 @@
 #define NAV 2
 #define GAM 3
 #define SYS 4
-#define MIR 5
 
 / {
     macros {
-        m_cedilla: cedilla {
-            label = "CEDILLA";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp RA(COMMA)>;
-        };
-
         k_arr: kotlin-arrow {
             label = "KOTLIN_ARROW";
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings = <&kp SPACE &kp MINUS &kp GT &kp SPACE>;
         };
-        k_elv: kotlin-elvis {
-            label = "KOTLIN_ELVIS";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp SPACE &kp QMARK &kp COLON &kp SPACE>;
-        };
+
         k_tpl: kotlin-template {
             label = "KOTLIN_TEMPLATE";
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings = <&kp DLLR &kp LBRC &kp RBRC &kp LEFT>;
-        };
-        k_log: android-log {
-            label = "ANDROID_LOG";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp P &kp R &kp I &kp V &kp A &kp T &kp E &kp SPACE &kp C &kp O &kp N &kp S &kp T &kp SPACE &kp V &kp A &kp L &kp SPACE &kp T &kp A &kp G>;
         };
 
         m_shot: screenshot {
@@ -63,24 +44,25 @@
     };
 
     behaviors {
-        /* Home Row: Tap-Preferred (Segurança para escrita de texto contínuo) */
+        /* Home Row: Tap-Preferred com proteção anti-roll (require-prior-idle-ms + quick-tap-ms) */
         hm: homerow-mods {
             compatible = "zmk,behavior-hold-tap";
             label = "HOMEROW_MODS";
             #binding-cells = <2>;
             tapping-term-ms = <200>;
-            quick-tap-ms = <0>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
             flavor = "tap-preferred";
             bindings = <&kp>, <&kp>;
         };
 
-        /* Thumbs: Balanced (Fluidez para atalhos e layers) */
+        /* Thumbs: Balanced com quick-tap para repetição imediata */
         tm: thumb-mod {
             compatible = "zmk,behavior-hold-tap";
             label = "THUMB_MOD";
             #binding-cells = <2>;
             tapping-term-ms = <200>;
-            quick-tap-ms = <0>;
+            quick-tap-ms = <175>;
             flavor = "balanced";
             bindings = <&kp>, <&kp>;
         };
@@ -90,7 +72,7 @@
             label = "THUMB_LAYER";
             #binding-cells = <2>;
             tapping-term-ms = <200>;
-            quick-tap-ms = <0>;
+            quick-tap-ms = <175>;
             flavor = "balanced";
             bindings = <&mo>, <&kp>;
         };
@@ -115,44 +97,62 @@
 
     combos {
         compatible = "zmk,combos";
-        timeout-ms = <50>;
 
-        /* PT-BR: C + D = ç (Mão esquerda, dedos médio e indicador inferiores) */
+        /* PT-BR: C + D = ç / Ç (Mão esquerda, médio + indicador inferiores) */
         combo_cedilla {
-            timeout-ms = <50>;
+            timeout-ms = <45>;
+            require-prior-idle-ms = <100>;
             key-positions = <39 40>;
-            bindings = <&m_cedilla>;
+            bindings = <&kp RA(COMMA)>;
+            layers = <DEF>;
         };
 
-        /* PT-BR: R + S = ~ (Mão esquerda, dedos anelar e médio Home Row) */
+        /* PT-BR: R + S = ~ dead key para ã/õ (Mão esquerda, anelar + médio Home Row) */
         combo_tilde {
-            timeout-ms = <50>;
+            timeout-ms = <30>;
+            require-prior-idle-ms = <125>;
             key-positions = <26 27>;
             bindings = <&kp TILDE>;
+            layers = <DEF>;
         };
 
-        /* PT-BR: S + T = ' (Mão esquerda, dedos médio e indicador Home Row) */
+        /* PT-BR: S + T = ´ dead key para á/é/í/ó/ú (Mão esquerda, médio + indicador Home Row) */
         combo_acute {
-            timeout-ms = <50>;
+            timeout-ms = <30>;
+            require-prior-idle-ms = <125>;
             key-positions = <27 28>;
             bindings = <&kp SQT>;
+            layers = <DEF>;
         };
 
-        /* CLI: W + F = & (Mão esquerda, anelar e médio Linha 1) */
+        /* PT-BR: X + C = ^ dead key para â/ê/ô (Mão esquerda, anelar + médio inferiores) */
+        combo_caret {
+            timeout-ms = <40>;
+            require-prior-idle-ms = <125>;
+            key-positions = <38 39>;
+            bindings = <&kp CARET>;
+            layers = <DEF>;
+        };
+
+        /* CLI: W + F = & (Mão esquerda, anelar + médio Linha 1) */
         combo_amps {
-            timeout-ms = <50>;
+            timeout-ms = <45>;
+            require-prior-idle-ms = <100>;
             key-positions = <14 15>;
             bindings = <&kp AMPS>;
+            layers = <DEF CODE>;
         };
 
-        /* CLI: F + P = | (Mão esquerda, médio e indicador Linha 1) */
+        /* CLI: F + P = | (Mão esquerda, médio + indicador Linha 1) */
         combo_pipe {
-            timeout-ms = <50>;
+            timeout-ms = <45>;
+            require-prior-idle-ms = <100>;
             key-positions = <15 16>;
             bindings = <&kp PIPE>;
+            layers = <DEF CODE>;
         };
 
-        /* Sistema: Q + A = Camada SYS (Mão esquerda, mindinho Linha 1 + Home Row) */
+        /* Sistema: Q + A = Camada SYS (Mão esquerda, anelar Linha 1 + Home Row) */
         combo_sys {
             timeout-ms = <60>;
             key-positions = <13 25>;
@@ -161,9 +161,11 @@
 
         /* Atalho de seleção global: J + L = Ctrl + A */
         combo_select_all {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
+            require-prior-idle-ms = <125>;
             key-positions = <18 19>;
             bindings = <&kp LC(A)>;
+            layers = <DEF>;
         };
     };
 
@@ -192,41 +194,41 @@
         };
 
         /* ------------------------------------------------------------------------------------------------------------
-         * 1. CODE LAYER (CODE) — Símbolos, Delimitadores e Teclado Numérico 3x3
+         * 1. CODE LAYER (CODE) — Símbolos Literais (Sem Dead Key), Delimitadores e Teclado Numérico 3x3
          * ------------------------------------------------------------------------------------------------------------ */
         code_layer {
             bindings = <
-&kp TILDE &kp EXCL     &kp AT       &kp HASH     &kp DLLR     &kp PRCNT                          &kp CARET    &kp AMPS     &kp STAR     &kp LPAR     &kp RPAR     &kp UNDER
-&trans    &kp LBRC     &kp RBRC     &kp LT       &kp GT       &kp HASH                           &kp FSLH     &kp N7       &kp N8       &kp N9       &kp STAR     &kp PLUS
-&trans    &kp LPAR     &kp RPAR     &kp SQT      &kp DQT      &kp AMPS                           &kp DOT      &kp N4       &kp N5       &kp N6       &kp MINUS    &kp EQUAL
-&trans    &kp LBKT     &kp RBKT     &kp GRAVE    &kp DLLR     &kp PIPE     &trans   &trans       &kp N0       &kp N1       &kp N2       &kp N3       &kp COLON    &kp BSLH
-                                    &trans       &trans       &trans       &trans   &trans       &trans       &trans       &trans
+&kp RA(TILDE) &kp EXCL   &kp AT       &kp HASH      &k_tpl       &kp PRCNT                          &kp RA(CARET) &kp AMPS   &kp PIPE     &kp SEMI     &kp BSLH     &k_arr
+&trans        &kp LBRC   &kp RBRC     &kp LT        &kp GT       &kp EXCL                           &kp FSLH      &kp N7     &kp N8       &kp N9       &kp STAR     &kp PLUS
+&trans        &kp LPAR   &kp RPAR     &kp RA(SQT)   &kp RA(DQT)  &kp UNDER                          &kp DOT       &kp N4     &kp N5       &kp N6       &kp MINUS    &kp EQUAL
+&trans        &kp LBKT   &kp RBKT     &kp RA(GRAVE) &kp DLLR     &kp QMARK    &trans   &trans       &kp N0        &kp N1     &kp N2       &kp N3       &kp COLON    &kp BSLH
+                                      &trans        &trans       &trans       &trans   &trans       &trans        &trans     &trans
             >;
         };
 
         /* ------------------------------------------------------------------------------------------------------------
-         * 2. NAVIGATION LAYER (NAV) — Vim HJKL + Hyprland Workspaces (1, 2, 3, 4)
+         * 2. NAVIGATION LAYER (NAV) — Vim HJKL + Hyprland Workspaces (1, 2, 3, 4) + Print de Área
          * ------------------------------------------------------------------------------------------------------------ */
         nav_layer {
             bindings = <
-&kp F1    &kp F2       &kp F3       &kp F4       &kp F5       &kp F6                             &kp F7       &kp F8       &kp F9       &kp F10      &kp F11      &kp F12
-&trans    &kp LG(Q)    &kp LG(F)    &kp LG(LS(SPACE)) &kp LG(G) &kp LG(S)                        &trans       &kp HOME     &kp PG_UP    &kp PG_DN    &kp END      &trans
-&trans    &kp LG(N1)   &kp LG(N2)   &kp LG(N3)   &kp LG(N4)   &trans                             &trans       &kp LEFT     &kp DOWN     &kp UP       &kp RIGHT    &trans
-&trans    &kp LG(LS(N1)) &kp LG(LS(N2)) &kp LG(LS(N3)) &kp LG(LS(N4)) &trans &trans   &tog GAM  &trans       &kp C_VOL_DN &kp C_MUTE   &kp C_VOL_UP &kp C_PP     &trans
-                                    &trans       &trans       &trans       &trans   &trans       &trans       &trans       &trans
+&kp F1    &kp F2       &kp F3       &kp F4            &kp F5       &kp F6                             &kp F7          &kp F8       &kp F9       &kp F10      &kp F11      &kp F12
+&trans    &kp LG(Q)    &kp LG(F)    &kp LG(LS(SPACE)) &kp LG(G)    &kp LG(S)                          &m_shot         &kp HOME     &kp PG_UP    &kp PG_DN    &kp END      &m_shot
+&trans    &kp LG(N1)   &kp LG(N2)   &kp LG(N3)        &kp LG(N4)   &kp LG(M)                          &kp LG(LS(RET)) &kp LEFT     &kp DOWN     &kp UP       &kp RIGHT    &trans
+&trans    &kp LG(LS(N1)) &kp LG(LS(N2)) &kp LG(LS(N3)) &kp LG(LS(N4)) &trans  &trans   &tog GAM       &trans          &kp C_VOL_DN &kp C_MUTE   &kp C_VOL_UP &kp C_PP     &trans
+                                    &trans            &trans       &trans     &trans   &trans         &trans          &trans       &trans
             >;
         };
 
         /* ------------------------------------------------------------------------------------------------------------
-         * 3. GAMING LAYER (GAM) — QWERTY Puro para Jogos
+         * 3. GAMING LAYER (GAM) — QWERTY Puro Alinhado (T/G/B na Mão Esquerda + LALT no Polegar)
          * ------------------------------------------------------------------------------------------------------------ */
         gaming_layer {
             bindings = <
-&kp N1    &kp N2       &kp N3       &kp N4       &kp N5       &kp N6                             &kp N7       &kp N8       &kp N9       &kp N0       &kp MINUS    &kp EQUAL
-&none     &kp TAB      &kp Q        &kp W        &kp E        &kp R                              &kp T        &kp Y        &kp U        &kp I        &kp O        &none
-&none     &kp LCTRL    &kp A        &kp S        &kp D        &kp F                              &kp G        &kp H        &kp J        &kp K        &kp L        &none
-&none     &kp LSHFT    &kp Z        &kp X        &kp C        &kp V        &kp TAB   &tog GAM    &kp B        &kp N        &kp M        &kp COMMA    &kp DOT      &none
-                                    &kp LGUI     &trans       &kp SPACE    &kp ESC   &kp SPACE   &kp SPACE    &tog GAM     &kp RSHFT
+&kp ESC   &kp N1       &kp N2       &kp N3       &kp N4       &kp N5                             &kp N6       &kp N7       &kp N8       &kp N9       &kp N0       &kp BSPC
+&kp TAB   &kp Q        &kp W        &kp E        &kp R        &kp T                              &kp Y        &kp U        &kp I        &kp O        &kp P        &kp RET
+&kp LSHFT &kp A        &kp S        &kp D        &kp F        &kp G                              &kp H        &kp J        &kp K        &kp L        &kp SEMI     &kp SQT
+&kp LCTRL &kp Z        &kp X        &kp C        &kp V        &kp B        &kp TAB   &tog GAM    &kp N        &kp M        &kp COMMA    &kp DOT      &kp FSLH     &tog GAM
+                                    &kp LALT     &kp LCTRL    &kp SPACE    &kp ESC   &kp BSPC    &kp RET      &tog GAM     &kp RSHFT
             >;
         };
 
@@ -240,19 +242,6 @@
 &none        &none        &none        &none        &none        &none                              &none        &none        &none        &none        &none        &none
 &none        &none        &none        &none        &none        &none        &none     &none       &none        &none        &none        &none        &none        &none
                                        &none        &none        &none        &none     &none       &none        &none        &none
-            >;
-        };
-
-        /* ------------------------------------------------------------------------------------------------------------
-         * 5. MIRROR LAYER (MIR) — Modo Unimanual Opcional
-         * ------------------------------------------------------------------------------------------------------------ */
-        mirror_layer {
-            bindings = <
-&trans    &trans       &trans       &trans       &trans       &trans                             &trans       &trans       &trans       &trans       &trans       &trans
-&trans    &kp SQT      &kp SEMI     &kp Y        &kp U        &kp L                              &kp P        &kp F        &kp W        &kp Q        &trans       &trans
-&trans    &hm RCTRL O  &hm RALT I   &hm RGUI E   &hm RSHFT N  &kp M                              &kp G        &hm LSHFT T  &hm LGUI S   &hm LALT R   &hm LCTRL A  &trans
-&trans    &kp FSLH     &kp DOT      &kp COMMA    &kp H        &kp K        &tm RSHFT SPACE &kp RET &kp V     &kp D        &kp C        &kp X        &kp Z        &trans
-                                    &trans       &trans       &kp RET      &trans   &kp BSPC     &kp BSPC    &trans       &trans
             >;
         };
     };
